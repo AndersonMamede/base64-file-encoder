@@ -18,25 +18,31 @@ function getFileContent(filePath, callback, options){
 	rs.on("end", () => callback(null, content));
 }
 
-function encode(filePath, callback){
-	getFileContent(filePath, (error, content) => {
+function encode(inputFilePath, outputFilePath, callback){
+	outputFilePath = outputFilePath || inputFilePath;
+	callback = callback || function(error){};
+	
+	getFileContent(inputFilePath, (error, content) => {
 		if(error){
 			return callback(error);
 		}
 		
-		fs.writeFile(filePath, content, error => {
+		fs.writeFile(outputFilePath, content, error => {
 			error ? callback(error) : callback();
 		});
 	}, {encoding:"base64"});
 }
 
-function decode(filePath, callback){
-	getFileContent(filePath, (error, content) => {
+function decode(inputFilePath, outputFilePath, callback){
+	outputFilePath = outputFilePath || inputFilePath;
+	callback = callback || function(error){};
+	
+	getFileContent(inputFilePath, (error, content) => {
 		if(error){
 			return callback(error);
 		}
 		
-		fs.writeFile(filePath, content, "base64", error => {
+		fs.writeFile(outputFilePath, content, "base64", error => {
 			error ? callback(error) : callback();
 		});
 	});
