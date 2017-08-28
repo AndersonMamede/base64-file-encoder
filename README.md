@@ -32,7 +32,8 @@ b64File.encode('foo.txt', 'bar.txt', function(error){
 });
 
 
-// base64 encodes the contents of foo.txt and outputs it to the same file (i.e. overwrites it)
+// base64 encodes the contents of foo.txt and outputs it to the same
+// file (i.e. overwrites it)
 b64File.encode('foo.txt', null, function(error){
   if(!error){
     consolelog('file was encoded and overwritten');
@@ -52,7 +53,8 @@ b64File.decode('bar.txt', 'foo.txt', function(error){
 });
 
 
-// base64 decodes the contents of bar.txt and outputs it to the same file (i.e. overwrites it)
+// base64 decodes the contents of bar.txt and outputs it to the same
+// file (i.e. overwrites it)
 b64File.encode('bar.txt', null, function(error){
   if(!error){
     consolelog('file was decoded and overwritten');
