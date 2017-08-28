@@ -19,7 +19,7 @@ Example
 ``` js
 const b64File = require('base64-file-encoder');
 
-// replace a file with its base64 version
+// base64 encodes the contents of foo.txt and outputs it to bar.txt
 b64File.encode('foo.txt', 'bar.txt', function(error){
   if(error){
     console.log(error);
@@ -30,13 +30,14 @@ b64File.encode('foo.txt', 'bar.txt', function(error){
   console.log('file was encoded');
 });
 
+// base64 encodes the contents of foo.txt and outputs it to the same file (i.e. overwrites it)
 b64File.encode('foo.txt', null, function(error){
   if(!error){
     consolelog('file was encoded and overwritten');
   }
 });
 
-// replace a base64 encoded file with its decoded version
+// base64 decodes the contents of bar.txt and outputs it to foo.txt
 b64File.decode('bar.txt', 'foo.txt', function(error){
   if(error){
     console.log(error);
@@ -47,6 +48,7 @@ b64File.decode('bar.txt', 'foo.txt', function(error){
   console.log('file was decoded');
 });
 
+// base64 decodes the contents of bar.txt and outputs it to the same file (i.e. overwrites it)
 b64File.encode('bar.txt', null, function(error){
   if(!error){
     consolelog('file was decoded and overwritten');
