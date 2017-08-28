@@ -20,27 +20,50 @@ Example
 const b64File = require('base64-file-encoder');
 
 // replace a file with its base64 version
-b64File.encode('foo.txt', function(error){
+b64File.encode('foo.txt', 'bar.txt', function(error){
   if(error){
     console.log(error);
     return;
   }
   
-  // if file content was 'foo', now it's 'Zm9v'
-  console.log('file was encoded and overwritten');
+  // if foo.txt content was 'foo', bar.txt content will be 'Zm9v'
+  console.log('file was encoded');
+});
+
+b64File.encode('foo.txt', null, function(error){
+  if(!error){
+    consolelog('file was encoded and overwritten');
+  }
 });
 
 // replace a base64 encoded file with its decoded version
-b64File.decode('foo.txt', function(error){
+b64File.decode('bar.txt', 'foo.txt', function(error){
   if(error){
     console.log(error);
     return;
   }
   
-  // if file content was 'Zm9v', now it's 'foo'
-  console.log('file was decoded and overwritten');
+  // if bar.txt content was 'Zm9v', foo.txt content will be 'foo'
+  console.log('file was decoded');
+});
+
+b64File.encode('bar.txt', null, function(error){
+  if(!error){
+    consolelog('file was decoded and overwritten');
+  }
 });
 ```
+
+
+## API
+
+### encode(inputFilePath, [outputFilePath], [callback])
+
+Base64 encodes the contents of a file and outputs it to another file ($outputFilePath) or to the same file (if outputPath is not provided). Both outputFilePath and callback are optional.
+
+### decode(inputFilePath, [outputFilePath], [callback])
+
+Decodes the contents of a base64 encoded file and outputs it to another file ($outputFilePath) or to the same file (if outputPath is not provided). Both outputFilePath and callback are optional.
 
 
 ## License ##
