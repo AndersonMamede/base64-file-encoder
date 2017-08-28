@@ -45,4 +45,4 @@ b64File.decode('foo.txt', function(error){
 
 ## License ##
 
-MIT. See [LICENSE.md](http://github.com/AndersonMamede/base64-file-encoder/blob/master/LICENSE.md) for details.
+MIT. See [LICENSE.md](http://github.com/AndersonMamede/base64-file-encoder/blob/master/LICENSE) for details.
