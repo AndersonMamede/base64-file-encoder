@@ -7,43 +7,51 @@ module.exports = {
 
 var fs = require("fs");
 
-function getFileContent(filePath, callback, options){
-	var content = "";
-	var rs = fs.createReadStream(filePath, options||undefined);
+function getFileContent(filePath, options){
+	return new Promise((resolve, reject) => {
+		var rs = fs.createReadStream(filePath, options);
+		var content = "";
+		
+		rs.on("error", error => reject(error));
+		
+		rs.on("data", chunk => content += chunk);
+		
+		rs.on("end", _ => resolve(content));
+	});
+}
+
+function loadAndSaveFileContent(inputFilePath, outputFilePath, callback, getFileContentParameters, writeFileParameters){
+	outputFilePath = outputFilePath || inputFilePath;
+	callback = callback || function(error){};
 	
-	rs.on("error", error => callback(error, null));
+	var ps = new Promise((resolve, reject) => {
+		getFileContent(inputFilePath, getFileContentParameters||{})
+			.then(content => {
+				fs.writeFile(outputFilePath, content, writeFileParameters||{}, error => {
+					if(error){
+						return reject(error) | callback(error);
+					}
+					
+					return resolve() | callback();
+				});
+			})
+			.catch(error => {
+				return reject(error) | callback(error);
+			});
+	});
 	
-	rs.on("data", chunk => content += chunk);
+	if(callback){
+		// supress UnhandledPromiseRejectionWarning
+		ps.catch(error => {});
+	}
 	
-	rs.on("end", () => callback(null, content));
+	return ps;
 }
 
 function encode(inputFilePath, outputFilePath, callback){
-	outputFilePath = outputFilePath || inputFilePath;
-	callback = callback || function(error){};
-	
-	getFileContent(inputFilePath, (error, content) => {
-		if(error){
-			return callback(error);
-		}
-		
-		fs.writeFile(outputFilePath, content, error => {
-			error ? callback(error) : callback();
-		});
-	}, {encoding:"base64"});
+	return loadAndSaveFileContent(inputFilePath, outputFilePath, callback, {encoding:"base64"});
 }
 
 function decode(inputFilePath, outputFilePath, callback){
-	outputFilePath = outputFilePath || inputFilePath;
-	callback = callback || function(error){};
-	
-	getFileContent(inputFilePath, (error, content) => {
-		if(error){
-			return callback(error);
-		}
-		
-		fs.writeFile(outputFilePath, content, "base64", error => {
-			error ? callback(error) : callback();
-		});
-	});
+	return loadAndSaveFileContent(inputFilePath, outputFilePath, callback, null, "base64");
 }
