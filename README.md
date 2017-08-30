@@ -2,6 +2,7 @@ base64-file-encoder
 ================
 > [A Node.js module](https://www.npmjs.com/package/base64-file-encoder) to base64 encode/decode a file and save it to disk
 
+
 [![NPM](https://nodei.co/npm/base64-file-encoder.png?downloads=true&stars=true)](https://www.npmjs.com/package/base64-file-encoder)
 
 Installation
