@@ -7,51 +7,41 @@ module.exports = {
 
 var fs = require("fs");
 
-function getFileContent(filePath, options){
+function getFileContent(filePath){
 	return new Promise((resolve, reject) => {
-		var rs = fs.createReadStream(filePath, options);
-		var content = "";
+		var rs = fs.createReadStream(filePath);
+		var fileContent = "";
 		
 		rs.on("error", error => reject(error));
 		
-		rs.on("data", chunk => content += chunk);
+		rs.on("data", chunk => fileContent += chunk);
 		
-		rs.on("end", _ => resolve(content));
+		rs.on("end", _ => resolve(fileContent));
 	});
 }
 
-function loadAndSaveFileContent(inputFilePath, outputFilePath, callback, getFileContentParameters, writeFileParameters){
-	outputFilePath = outputFilePath || inputFilePath;
-	callback = callback || function(error){};
-	
-	var ps = new Promise((resolve, reject) => {
-		getFileContent(inputFilePath, getFileContentParameters||{})
-			.then(content => {
-				fs.writeFile(outputFilePath, content, writeFileParameters||{}, error => {
-					if(error){
-						return reject(error) | callback(error);
-					}
-					
-					return resolve() | callback();
+function encode(inputFilePath, outputFilePath){
+	return new Promise((resolve, reject) => {
+		var writer = fs.createWriteStream(outputFilePath || inputFilePath);
+		
+		writer.on("error", () => reject(error));
+		
+		writer.on("finish", () => resolve());
+		
+		fs.createReadStream(inputFilePath, {
+			encoding: "base64"
+		}).pipe(writer);
+	});
+}
+
+function decode(inputFilePath, outputFilePath){
+	return new Promise((resolve, reject) => {
+		getFileContent(inputFilePath)
+			.then(fileContent => {
+				fs.writeFile(outputFilePath || inputFilePath, fileContent, "base64", error => {
+					error ? reject(error) : resolve();
 				});
 			})
-			.catch(error => {
-				return reject(error) | callback(error);
-			});
+			.catch(error => reject(error));
 	});
-	
-	if(callback){
-		// supress UnhandledPromiseRejectionWarning
-		ps.catch(error => {});
-	}
-	
-	return ps;
-}
-
-function encode(inputFilePath, outputFilePath, callback){
-	return loadAndSaveFileContent(inputFilePath, outputFilePath, callback, {encoding:"base64"});
-}
-
-function decode(inputFilePath, outputFilePath, callback){
-	return loadAndSaveFileContent(inputFilePath, outputFilePath, callback, null, "base64");
 }
