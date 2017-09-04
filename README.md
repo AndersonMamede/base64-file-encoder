@@ -72,15 +72,15 @@ b64File.decode('bar.txt')
 
 ## API
 
-### encode(inputFilePath, [outputFilePath], [callback])
+### encode(inputFilePath, [outputFilePath])
 
-Base64 encodes the contents of a file and outputs it to another file ($outputFilePath) or to the same file (if outputPath is not provided). Both outputFilePath and callback are optional.  
-This function returns a promise. For the sake of backward compatibility, this function also accepts a callback as third parameter.
+Base64 encodes the contents of a file and outputs it to another file (outputFilePath) or to the same file (if outputPath is not provided).  
+This function returns a promise.
 
 ### decode(inputFilePath, [outputFilePath], [callback])
 
-Decodes the contents of a base64 encoded file and outputs it to another file ($outputFilePath) or to the same file (if outputPath is not provided). Both outputFilePath and callback are optional.  
-This function returns a promise. For the sake of backward compatibility, this function also accepts a callback as third parameter.
+Decodes the contents of a base64 encoded file and outputs it to another file (outputFilePath) or to the same file (if outputPath is not provided).  
+This function returns a promise.
 
 
 ## License ##
