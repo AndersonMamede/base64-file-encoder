@@ -1,5 +1,4 @@
 ![npm](https://img.shields.io/npm/dt/base64-file-encoder.svg?style=flat-square)
-![Hits](https://hitt.herokuapp.com/AndersonMamede/base64-file-encoder.svg)
 
 base64-file-encoder
 ================
